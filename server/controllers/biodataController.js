@@ -13,12 +13,13 @@ class BiodataController {
       addressCard,
       address,
       email,
-      noHp,
+      noHP,
       guardian,
       skill,
       relocate,
       salary,
     } = req.body;
+    console.log(req.user.id, "<<<")
     try {
       const newBiodata = await Biodata.create({
         position,
@@ -31,15 +32,18 @@ class BiodataController {
         addressCard,
         address,
         email,
-        noHp,
+        noHP,
         guardian,
         skill,
         relocate,
-        salary,
+        salary: Number(salary),
+        userId: req.user.id
       });
+      console.log(newBiodata)
       res.status(201).json(newBiodata);
     } catch (error) {
-      next(error);
+      console.log(error)
+      // next(error);
     }
   }
 
@@ -66,7 +70,7 @@ class BiodataController {
       if(!Biodatacheck) {
         throw {name: "not found"}
       }
-      const newBiodata = await Biodata.update({
+      const newBiodata = await Biodatacheck.update({
         position,
         name,
         idCardNumber,
@@ -103,12 +107,14 @@ class BiodataController {
   static async getBiodata(req, res, next) {
     try {
         let dataBiodata;
+        console.log(req.user.role ===  'admin')
         if(req.user.role === 'admin'){
-            dataBiodata = await Biodata.findAll({attributes: ['name', 'birth', 'position']});
+            dataBiodata = await Biodata.findAll({attributes: ['id', 'name', 'birth', 'position']});
+            console.log(dataBiodata)
         } else {
-            dataBiodata = await Biodata.findOne({
+            dataBiodata = await Biodata.findAll({
                 where: { userId: req.user.id },
-                attributes: ['name', 'birth', 'position']
+                attributes: ['id', 'name', 'birth', 'position']
             })
         }
         res.status(200).json({ dataBiodata });
@@ -119,22 +125,16 @@ class BiodataController {
 
   static async getBiodataById(req, res, next) {
     try {
-        let dataBiodata = Biodata.findByPk(req.params.id, {
-            include: [
-                {
-                  association: 'Education',
-                },
-                {
-                  association: 'Work',
-                },
-                {
-                  association: 'Training',
-                },
-              ]
+        let dataBiodata = await Biodata.findOne({
+            where: {
+              id: req.params.id
+            },
+            include: ["Education", "Trainings", "Works"]
         });
         if (!dataBiodata) throw { name: 'not found' };
         res.status(200).json({ dataBiodata });
     } catch (error) {
+      console.log(error)
         next(error)
     }
   }

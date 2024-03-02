@@ -34,8 +34,8 @@ function errorHandler(error, req, res, next) {
         message = 'Internal Server Error';
         break;
     }
-    // console.log(error);
-    res.status(statusCode).json({ message });
+    console.log(error);
+    // res.status(statusCode).json({ message });
   }
   
   module.exports = errorHandler;

@@ -18,7 +18,7 @@ class WorkController {
           if(!WorkCheck) {
             throw {name: "not found"}
           }
-          const newWork = await Work.update({name, lastPosition, lastSalary, period});
+          const newWork = await WorkCheck.update({name, lastPosition, lastSalary, period});
           res.status(200).json(newWork);
         } catch (error) {
           next(error);
@@ -30,7 +30,7 @@ class WorkController {
           const work = await Work.findByPk(req.params.id);
           if (!work) throw { name: 'not found' };
           await work.destroy();
-          res.status(200).json({ message: `${work.title} success to delete` });
+          res.status(200).json({ message: `${work.name} success to delete` });
         } catch (error) {
           next(error);
         }
@@ -38,7 +38,7 @@ class WorkController {
 
       static async getWork(req, res, next) {
         try {
-            let dataWork = Work.findByPk(req.params.id);
+            let dataWork = await Work.findByPk(req.params.id);
             if (!dataWork) throw { name: 'not found' };
             res.status(200).json({ dataWork });
         } catch (error) {

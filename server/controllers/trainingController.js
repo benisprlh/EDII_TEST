@@ -18,7 +18,7 @@ class TrainingController {
           if(!trainingCheck) {
             throw {name: "not found"}
           }
-          const newTraining = await Training.update({name, certificate, period});
+          const newTraining = await trainingCheck.update({name, certificate, period});
           res.status(200).json(newTraining);
         } catch (error) {
           next(error);
@@ -30,7 +30,7 @@ class TrainingController {
           const training = await Training.findByPk(req.params.id);
           if (!training) throw { name: 'not found' };
           await training.destroy();
-          res.status(200).json({ message: `${training.title} success to delete` });
+          res.status(200).json({ message: `${training.name} success to delete` });
         } catch (error) {
           next(error);
         }
@@ -38,7 +38,7 @@ class TrainingController {
 
       static async getTraining(req, res, next) {
         try {
-            let dataTraining = Training.findByPk(req.params.id);
+            let dataTraining = await Training.findByPk(req.params.id);
             if (!dataTraining) throw { name: 'not found' };
             res.status(200).json({ dataTraining });
         } catch (error) {

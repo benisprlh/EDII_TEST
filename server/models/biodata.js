@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Biodata.belongsTo(models.User);
-      Biodata.hasMany(models.Education);
-      Biodata.hasMany(models.Training);
-      Biodata.hasMany(models.Work)
+      Biodata.belongsTo(models.User, {foreignKey: 'userId'});
+      Biodata.hasMany(models.Education, {foreignKey: 'biodataId'});
+      Biodata.hasMany(models.Training, {foreignKey: 'biodataId'});
+      Biodata.hasMany(models.Work, {foreignKey: 'biodataId'})
     }
   }
   Biodata.init({
@@ -55,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     birth: {
-      allowNull: false,
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notNull: {
           msg: 'Tempat tanggal lahir tidak boleh kosong',
@@ -200,6 +200,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     userId: {
       type : DataTypes.INTEGER,
+      allowNull: false,
       validate: {
         notNull: {
           msg: 'Penghasilan yang diharapkan tidak boleh kosong',

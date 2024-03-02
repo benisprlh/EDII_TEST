@@ -1,4 +1,4 @@
-const { authorization } = require('../auth');
+const { authorization, authentication } = require('../auth');
 const BiodataController = require('../controllers/biodataController');
 const EducationController = require('../controllers/educationController');
 const TrainingController = require('../controllers/trainingController');
@@ -9,20 +9,27 @@ const router = require('express').Router();
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
-router.get('/biodata', authorization BiodataController.getBiodata);
-router.post('/biodata', BiodataController.create);
-router.get('/biodata/:id', BiodataController.getBiodataById)
-router.put('/biodata/:id', BiodataController.update)
-router.delete('/biodata/:id', BiodataController.delete)
-router.post('/education/:id', EducationController.create);
-router.put('/education/:id', EducationController.update);
-router.delete('/education/:id', EducationController.delete);
-router.post('/work/:id', WorkController.create);
-router.put('/work/:id', WorkController.update);
-router.delete('/work/:id', WorkController.delete);
-router.post('/training/:id', TrainingController.create);
-router.put('/training/:id', TrainingController.update);
-router.delete('/training/:id', TrainingController.delete);
+
+router.get('/biodata', authentication, BiodataController.getBiodata);
+router.post('/biodata', authentication, BiodataController.create);
+router.get('/biodata/:id', authentication, authorization, BiodataController.getBiodataById)
+router.put('/biodata/:id', authentication, authorization, BiodataController.update)
+router.delete('/biodata/:id', authentication, authorization,  BiodataController.delete)
+
+router.post('/education/:id', authentication, EducationController.create);
+router.get('/education/:id', authentication, EducationController.getEducation);
+router.put('/education/:id', authentication, EducationController.update);
+router.delete('/education/:id', authentication, EducationController.delete);
+
+router.post('/work/:id', authentication, WorkController.create);
+router.get('/work/:id', authentication, WorkController.getWork);
+router.put('/work/:id', authentication, WorkController.update);
+router.delete('/work/:id', authentication, WorkController.delete);
+
+router.post('/training/:id', authentication, TrainingController.create);
+router.get('/training/:id', authentication, TrainingController.getTraining);
+router.put('/training/:id', authentication, TrainingController.update);
+router.delete('/training/:id', authentication, TrainingController.delete);
 
 
 module.exports = router;

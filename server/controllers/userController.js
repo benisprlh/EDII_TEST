@@ -45,8 +45,8 @@ class UserController {
 
       res.status(201).json({ access_token });
 
-      res.status(201).json({ message: "Login berhasil" });
     } catch (error) {
+      console.log(error)
       next(error);
     }
   }

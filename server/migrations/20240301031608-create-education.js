@@ -31,7 +31,11 @@ module.exports = {
       },
       biodataId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        references: {
+          model: 'Biodata',
+          key: 'id',
+        },
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
