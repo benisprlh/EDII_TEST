@@ -74,7 +74,7 @@ export const EditEducationForm = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Add Data</h2>
+      <h2>Edit Data</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="level">Jenjang Pendidikan:</label>
